@@ -2,7 +2,6 @@ import Head from 'next/head'
 import { useCallback, useState } from 'react'
 import Dropzone from '../components/Dropzone'
 import download from '../utils/download'
-import readFileAsync from '../utils/readFileAsync'
 import zipFiles from '../utils/zip'
 
 export default function Home() {
@@ -29,7 +28,7 @@ export default function Home() {
 
   const compressFiles = useCallback(async () => {
     const zipArchive = await zipFiles(files)
-    // download(zipArchive)
+    download(zipArchive)
     console.log(zipArchive)
   }, [files])
 

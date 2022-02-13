@@ -2,10 +2,10 @@ import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import { useDropzone } from 'react-dropzone'
 import size from 'filesize.js'
 
-const supportsInputDirs = 'webkitdirectory' in HTMLInputElement.prototype
-// const supportsInputDirs = 'webkitdirectory' in document.createElement('input')
-const supportsRelativePath = 'webkitRelativePath' in File.prototype
-const supportsDirs = typeof DataTransferItem != 'undefined' && 'webkitGetAsEntry' in DataTransferItem.prototype
+// const supportsInputDirs = 'webkitdirectory' in HTMLInputElement.prototype
+// // const supportsInputDirs = 'webkitdirectory' in document.createElement('input')
+// const supportsRelativePath = 'webkitRelativePath' in File.prototype
+// const supportsDirs = typeof DataTransferItem != 'undefined' && 'webkitGetAsEntry' in DataTransferItem.prototype
 
 interface DropZoneProps {
   onDrop: (acceptedFiles: File[]) => void
@@ -27,12 +27,14 @@ export default function Dropzone({ onDrop }: DropZoneProps) {
 
   useEffect(() => {
     // only init'd when support dirs
+    console.log(dirInputRef);
     if (dirInputRef.current) {
+      
       dirInputRef.current.setAttribute('webkitdirectory', '')
     }
   }, [])
 
-  if (!(supportsInputDirs && supportsRelativePath && supportsDirs)) return <h1>NO</h1>
+  // if (!(supportsInputDirs && supportsRelativePath && supportsDirs)) return <h1>NO</h1>
   return (
     <>
       <div
@@ -54,11 +56,11 @@ export default function Dropzone({ onDrop }: DropZoneProps) {
             >
               <span>Upload your files / folders</span>
               <input
-                ref={dirInputRef}
                 {...getInputProps({
                   multiple: true,
                   id: 'file-upload',
                   name: 'file-upload',
+                  ref: dirInputRef,
                 })}
                 // type="file"
                 // className="sr-only"

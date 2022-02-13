@@ -1,16 +1,10 @@
 import * as fflate from 'fflate'
 import type { AsyncZippable } from 'fflate'
-
-const fileToU8 = (file: File, cb: (out: Uint8Array) => void) => {
-  const fr = new FileReader()
-  fr.onloadend = () => {
-    cb(new Uint8Array(fr.result as ArrayBuffer))
-  }
-  fr.readAsArrayBuffer(file)
-}
+import { readFileU8Async } from './filereader'
+import { nestPathsIntoObject } from './nested-files'
 
 export default function zipFiles(files: File[]): Promise<Uint8Array> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     // fflate's ZIP API is asynchronous and parallelized (multithreaded)
     let left = files.length
     let zipObj = {} as AsyncZippable
@@ -21,45 +15,53 @@ export default function zipFiles(files: File[]): Promise<Uint8Array> {
       'mp4', 'mov', 'mp3', 'aifc'
     ];
 
-    // Yet again, this is necessary for parallelization.
-    let processFile = function (i: number) {
-      let file = files[i]
-      let ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
-      fileToU8(file, function (buf) {
-        // With fflate, we can choose which files we want to compress
-        zipObj[file.name] = [
-          buf,
-          {
-            level: ALREADY_COMPRESSED.indexOf(ext) == -1 ? 6 : 0,
-          },
-        ]
+    // const zipObjecttt = files.map(async (file) => {
+    //   let ext = file.name.split('.').pop() || ''
+    //   let isCompressed = ALREADY_COMPRESSED.includes(ext)
+    //   const bufferedFile = await readFileU8Async(file)
 
-        // If we didn't want to specify options:
-        // zipObj[file.name] = buf;
+    // })
 
-        if (!--left) {
-          fflate.zip(
-            zipObj,
-            {
-              // If you want to control options for every file, you can do so here
-              // They are merged with the per-file options (if they exist)
-              // mem: 9
-            },
-            function (err, out) {
-              if (err) reject(err)
-              else {
-                // You may want to try downloading to see that fflate actually works:
-                // download(out, 'fflate-demo.zip');
-                console.log('Zipped', out.length)
-                resolve(out)
-              }
-            }
-          )
+    const zipObjecttt = await nestPathsIntoObject(files)
+    console.log(zipObjecttt)
+    console.log(JSON.stringify(zipObjecttt, null, 2))
+
+    const zipped = fflate.zipSync(zipObjecttt, {
+      // If you want to control options for every file, you can do so here
+      // They are merged with the per-file options (if they exist)
+      // mem: 9
+    })
+
+    resolve(zipped)
+    console.log('Zipped', zipped.length)
+
+    /* 
+
+     function (err, out) {
+        if (err) {
+          console.error(err)
+
+          reject(err)
+        } else {
+          // You may want to try downloading to see that fflate actually works:
+          // download(out, 'fflate-demo.zip');
+          console.log('Zipped', out.length)
+          resolve(out)
         }
-      })
-    }
-    for (let i = 0; i < files.length; ++i) {
-      processFile(i)
-    }
+      }
+
+      */
+
+    // Yet again, this is necessary for parallelization.
+
+    // let processFile = async function (i: number) {
+    //   let file = files[i]
+    //   let ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
+    //   zipObj[file.name] = [
+    //     bufferedFile,
+    //     {
+    //       level: ALREADY_COMPRESSED.indexOf(ext) == -1 ? 6 : 0,
+    //     },
+    //   ]
   })
 }
