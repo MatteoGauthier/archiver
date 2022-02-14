@@ -1,10 +1,13 @@
 import size from 'filesize.js'
+import Head from 'next/head'
 import { useCallback, useMemo, useState } from 'react'
 import { FileWithPath } from 'react-dropzone'
 import Dropzone from '../components/Dropzone'
+import HeaderSEO from '../components/HeaderSEO'
 import DeleteIcon from '../components/svg/DeleteIcon'
 import FileIcon from '../components/svg/FIleIcon'
 import download from '../utils/download'
+import SEO from '../utils/seo'
 import zipFiles from '../utils/zip'
 import { ActionButton } from './../components/ActionButton'
 
@@ -80,6 +83,7 @@ export default function Home() {
 
   return (
     <div className="">
+      <HeaderSEO/>
       <main className="mx-auto max-w-screen-sm px-4 pt-12 md:px-6">
         <h1 className="text-5xl font-bold text-emerald-400">Archiver</h1>
         <p className="mt-2 text-base text-slate-600 dark:text-slate-300">
@@ -98,7 +102,7 @@ export default function Home() {
         </pre>
       </main>
 
-      <footer className="mt-16 mb-3 text-center text-slate-300 dark:text-slate-600">
+      <footer className="mt-20 mb-3 text-center text-slate-300 dark:text-slate-600">
         Made with love by squale.agency
       </footer>
 
