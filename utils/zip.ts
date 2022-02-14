@@ -1,9 +1,8 @@
 import * as fflate from 'fflate'
 import type { AsyncZippable } from 'fflate'
-import { readFileU8Async } from './filereader'
-import { nestPathsIntoObject } from './nested-files'
+import { readFileU8AsyncAlt } from './filereader'
 
-export default function zipFiles(files: File[]): Promise<Uint8Array> {
+export default async function zipFiles(files: File[]): Promise<Uint8Array> {
   return new Promise(async (resolve, reject) => {
     // fflate's ZIP API is asynchronous and parallelized (multithreaded)
     let left = files.length
@@ -15,25 +14,41 @@ export default function zipFiles(files: File[]): Promise<Uint8Array> {
       'mp4', 'mov', 'mp3', 'aifc'
     ];
 
-    // const zipObjecttt = files.map(async (file) => {
-    //   let ext = file.name.split('.').pop() || ''
-    //   let isCompressed = ALREADY_COMPRESSED.includes(ext)
-    //   const bufferedFile = await readFileU8Async(file)
+    console.log(files)
 
-    // })
+    const reducer = async (acc: any, key: any) => {
+      try {
+        let data = await readFileU8AsyncAlt(key)
+        return { ...(await acc), [key.path]: data }
+      } catch (error) {
+        return { ...(await acc), [key.path]: { error } }
+      }
+    }
+    const result: any = await files.reduce<any>(reducer, {})
+
+    console.log(await result)
+
+    /*
 
     const zipObjecttt = await nestPathsIntoObject(files)
     console.log(zipObjecttt)
-    console.log(JSON.stringify(zipObjecttt, null, 2))
+    console.log(JSON.stringify(zipObjecttt))
 
-    const zipped = fflate.zipSync(zipObjecttt, {
+    // const fakeObj = { 'hey.jpg': fflate.strToU8(JSON.stringify(files[0])) }
+    // console.log(fakeObj)
+    // console.log(JSON.stringify(fakeObj))
+
+    */
+
+    const zipped = fflate.zipSync(result, {
       // If you want to control options for every file, you can do so here
       // They are merged with the per-file options (if they exist)
       // mem: 9
+      
     })
 
-    resolve(zipped)
     console.log('Zipped', zipped.length)
+    resolve(zipped)
 
     /* 
 
