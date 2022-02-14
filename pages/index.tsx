@@ -7,7 +7,7 @@ import HeaderSEO from '../components/HeaderSEO'
 import DeleteIcon from '../components/svg/DeleteIcon'
 import FileIcon from '../components/svg/FIleIcon'
 import download from '../utils/download'
-import { event } from '../utils/gtag'
+import { sendGAEvent } from '../utils/gtag'
 import SEO from '../utils/seo'
 import zipFiles from '../utils/zip'
 import { ActionButton } from './../components/ActionButton'
@@ -41,10 +41,17 @@ export default function Home() {
   const compressFiles = useCallback(async () => {
     console.log('Compressing files...')
 
-    event({
+    sendGAEvent({
       action: 'compress',
-      category: 'Contact',
-      label: String(totalSize())
+      category: 'Core',
+      label: "Compression Event",
+      value:String(totalSize()),
+    })
+    sendGAEvent({
+      action: 'theme_preference',
+      category: 'General',
+      label: "Theme Preference",
+      value: window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "default"
     })
 
     setStatus('loading')
