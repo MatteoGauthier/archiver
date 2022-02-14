@@ -10,13 +10,6 @@ export default function Home() {
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     try {
-      // let filesDropped: File[] = []
-      // for (let currentFile = 0; currentFile < acceptedFiles.length; currentFile++) {
-      //   const file = acceptedFiles[currentFile]
-      //   const fileBuffer = await readFileAsync(file)
-      //   filesDropped.push(fileBuffer)
-      // }
-      // setFiles(filesDropped)
       console.log(acceptedFiles)
 
       setFiles(acceptedFiles)

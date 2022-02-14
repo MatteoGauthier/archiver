@@ -21,3 +21,5 @@ let obj = {
 }
 ```
 - [ ] Explore fflate code source in order to understand `fltn` function
+- [ ] Don't compress files that are already compressed 
+- [ ] Move to `.zip` method instead of `.zipSync`
