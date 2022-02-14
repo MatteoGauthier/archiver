@@ -1,6 +1,7 @@
 import * as fflate from 'fflate'
 import type { AsyncZippable, Zippable } from 'fflate'
 import { readFileU8AsyncAlt } from './filereader'
+import { FileWithPath } from 'react-dropzone'
 
 const pathMapperReducer = async (acc: any, key: any) => {
   try {
@@ -11,7 +12,7 @@ const pathMapperReducer = async (acc: any, key: any) => {
   }
 }
 
-export default async function zipFiles(files: File[]): Promise<Uint8Array> {
+export default async function zipFiles(files: FileWithPath[]): Promise<Uint8Array> {
   return new Promise(async (resolve, reject) => {
     const result: AsyncZippable = await files.reduce<any>(pathMapperReducer, {})
 

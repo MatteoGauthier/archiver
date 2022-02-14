@@ -12,34 +12,18 @@ interface DropZoneProps {
 }
 
 export default function Dropzone({ onDrop }: DropZoneProps) {
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({ onDrop })
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({ onDrop, noClick:true })
   const dirInputRef = useRef<HTMLInputElement>(null)
-
-  const acceptedFileItems = useMemo(
-    () =>
-      acceptedFiles.map((file: File) => (
-        <li key={file.name}>
-          {file.name} - {size(file.size, 1, 'iec')}
-        </li>
-      )),
-    [acceptedFiles]
-  )
-
-  useEffect(() => {
-    // only init'd when support dirs
-    console.log(dirInputRef);
-    if (dirInputRef.current) {
-      
-      dirInputRef.current.setAttribute('webkitdirectory', '')
-    }
-  }, [])
 
   // if (!(supportsInputDirs && supportsRelativePath && supportsDirs)) return <h1>NO</h1>
   return (
     <>
-      <div
-        className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6"
-        {...getRootProps()}
+      <span className="block text-sm font-medium text-gray-700 dark:text-gray-100"> Upload zone </span>
+      <label
+        className="mt-2 flex justify-center rounded-md border-2 border-dashed dark:bg-black/20 border-gray-300 dark:border-opacity-25 px-6 pt-5 pb-6"
+        {...getRootProps({
+          htmlFor:"file-upload"
+        })}
       >
         <div className="flex flex-col items-center space-y-1 text-center">
           <svg width="1em" className="h-10 w-10 text-gray-300" height="1em" viewBox="0 0 24 24">
@@ -49,10 +33,10 @@ export default function Dropzone({ onDrop }: DropZoneProps) {
               <path d="M12 3v12"></path>
             </g>
           </svg>
-          <div className="flex text-sm text-gray-600">
-            <label
-              htmlFor="file-upload"
-              className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
+          <div className="flex flex-col text-sm text-gray-600 md:flex-row">
+            <div
+              
+              className="relative cursor-pointer rounded-md font-medium text-emerald-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
             >
               <span>Upload your files / folders</span>
               <input
@@ -65,13 +49,12 @@ export default function Dropzone({ onDrop }: DropZoneProps) {
                 // type="file"
                 // className="sr-only"
               />
-            </label>
-            <p className="pl-1">or drag and drop them</p>
+            </div>
+            <p className="pl-1 text-gray-400">or drag and drop them</p>
           </div>
           <p className="text-xs text-gray-500">Recommended up to 500Mib</p>
         </div>
-      </div>
-      <ul>{acceptedFileItems}</ul>
+      </label>
     </>
   )
 }

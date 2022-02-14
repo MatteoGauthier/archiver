@@ -17,12 +17,12 @@ export function ActionButton({ onClick, status }: ActionButtonProps) {
         onClick={onClick}
         disabled={status !== 'ready' && status !== 'success' && status !== 'error'}
         className={clsx(
-          'appear-scale-opacityduration-1000 flex cursor-pointer items-center space-x-2 rounded-full px-4 py-2 font-medium text-white disabled:cursor-auto ',
-          status == 'idle' && 'bg-gray-600',
-          status == 'ready' && 'bg-blue-600',
-          status == 'loading' && 'bg-orange-500',
-          status == 'success' && 'bg-green-500',
-          status == 'error' && 'bg-red-500'
+          'appear-scale-opacityduration-1000 flex shadow-lg  cursor-pointer items-center space-x-2 rounded-full px-4 py-2 font-medium text-white disabled:cursor-auto ',
+          status == 'idle' && 'shadow-gray-500/30 bg-gray-600',
+          status == 'ready' && 'shadow-blue-500/30 bg-blue-600',
+          status == 'loading' && 'shadow-orange-500/30 bg-orange-500',
+          status == 'success' && 'shadow-green-500/30 bg-green-500',
+          status == 'error' && 'shadow-red-500/30 bg-red-500'
         )}
       >
         <span>

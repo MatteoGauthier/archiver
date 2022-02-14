@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+body {
+  @apply dark:bg-gray-900;
+}
 
 .appear-scale-opacity {
   animation: AppearScaleOpacity 400ms cubic-bezier(0.37, -0.4, 0.59, 1.57);
