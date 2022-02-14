@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Script from 'next/script'
 import SEO from '../utils/seo'
 
 function HeaderSEO() {
@@ -14,6 +15,23 @@ function HeaderSEO() {
       <meta name="theme-color" content="#34D399"></meta>
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <link rel="icon" href="/favicon.svg" type="image/svg+xml"></link>
+      <Script async  strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-FG40W0VPT7" />
+
+      <Script
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-FG40W0VPT7');
+
+  `,
+        }}
+      />
     </Head>
   )
 }
