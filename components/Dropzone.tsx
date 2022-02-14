@@ -68,7 +68,7 @@ export default function Dropzone({ onDrop }: DropZoneProps) {
             </label>
             <p className="pl-1">or drag and drop them</p>
           </div>
-          <p className="text-xs text-gray-500">Recommended up to 100Mib</p>
+          <p className="text-xs text-gray-500">Recommended up to 500Mib</p>
         </div>
       </div>
       <ul>{acceptedFileItems}</ul>

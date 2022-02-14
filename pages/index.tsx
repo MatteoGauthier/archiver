@@ -1,17 +1,25 @@
-import Head from 'next/head'
+import size from 'filesize.js'
 import { useCallback, useState } from 'react'
 import Dropzone from '../components/Dropzone'
 import download from '../utils/download'
 import zipFiles from '../utils/zip'
+import { ActionButton } from './../components/ActionButton'
 
 export default function Home() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'ready' | 'loading' | 'success' | 'error'>('idle')
   const [files, setFiles] = useState<File[]>([])
+
+  const totalSize = useCallback(() => {
+    return size(
+      files.reduce((acc, file) => acc + file.size, 0),
+      1,
+      'iec'
+    )
+  }, [files])
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     try {
-      console.log(acceptedFiles)
-
+      setStatus('ready')
       setFiles(acceptedFiles)
     } catch (error) {
       setStatus('error')
@@ -20,9 +28,17 @@ export default function Home() {
   }, [])
 
   const compressFiles = useCallback(async () => {
-    const zipArchive = await zipFiles(files)
-    download(zipArchive)
-    console.log(zipArchive)
+    console.log('Compressing files...')
+
+    setStatus('loading')
+    try {
+      const zipArchive = await zipFiles(files)
+      download(zipArchive)
+      setStatus('success')
+    } catch (error) {
+      setStatus('error')
+      console.error(error)
+    }
   }, [files])
 
   return (
@@ -37,17 +53,9 @@ export default function Home() {
         <Dropzone onDrop={onDrop} />
       </div>
 
-      <div className="mt-6 flex items-center justify-center space-x-2">
-        <button onClick={compressFiles} className="rounded-full bg-amber-600 px-4 py-2 font-medium text-white">
-          Zip these files
-        </button>
-        <button
-          className="rounded-full bg-amber-600 px-4 py-2 font-medium text-white disabled:opacity-30 disabled:grayscale disabled:filter"
-          disabled={status !== 'success'}
-        >
-          Download the archive
-        </button>
-      </div>
+      <pre>{totalSize()}</pre>
+
+      <ActionButton onClick={compressFiles} status={status} />
     </div>
   )
 }
