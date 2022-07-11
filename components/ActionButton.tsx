@@ -3,7 +3,7 @@ import React from 'react'
 import { CheckIcon } from './svg/CheckIcon'
 import CrossIcon from './svg/CrossIcon'
 import LoaderIcon from './svg/LoaderIcon'
-import ZipIcon from './svg/ZipIcon'
+import DownloadFileIcon from './svg/DownloadFileIcon'
 
 interface ActionButtonProps {
   onClick: () => void
@@ -32,7 +32,7 @@ export function ActionButton({ onClick, status }: ActionButtonProps) {
           {status == 'success' && 'Converted these files'}
           {status == 'error' && 'Error while converting'}
         </span>
-        {(status == 'idle' || status == 'ready') && <ZipIcon className="appear-scale-opacity h-6 w-6" />}
+        {(status == 'idle' || status == 'ready') && <DownloadFileIcon className="appear-scale-opacity h-6 w-6" />}
         {status == 'loading' && <LoaderIcon className="appear-scale-opacity h-6 w-6 " />}
         {status == 'success' && <CheckIcon className="appear-scale-opacity h-6 w-6 " />}
         {status == 'error' && <CrossIcon className="appear-scale-opacity h-6 w-6 " />}

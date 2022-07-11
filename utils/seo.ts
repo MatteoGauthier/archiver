@@ -6,9 +6,8 @@ interface SeoInterface {
 }
 
 const SEO: SeoInterface = {
-  title: 'Archiver - A simple tools used to compress / archive / zip your files',
-  description: "Just drag and drop your files in Archiver and a .zip file will be downloaded, just 2 steps.",
-  
+  title: 'Converter - A simple tools used to convert media file ',
+  description: 'Just drag and drop your file in Converter and convert your file in a minute, just 2 steps.',
 }
 
 export default SEO

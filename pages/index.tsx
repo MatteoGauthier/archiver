@@ -1,5 +1,4 @@
 import size from 'filesize.js'
-import Head from 'next/head'
 import { useCallback, useMemo, useState } from 'react'
 import { FileWithPath } from 'react-dropzone'
 import Dropzone from '../components/Dropzone'
@@ -8,9 +7,6 @@ import DeleteIcon from '../components/svg/DeleteIcon'
 import FileIcon from '../components/svg/FIleIcon'
 import download from '../utils/download'
 import transcode from '../utils/ffmpeg'
-import { sendGAEvent } from '../utils/gtag'
-import SEO from '../utils/seo'
-import zipFiles from '../utils/zip'
 import { ActionButton } from './../components/ActionButton'
 
 export default function Home() {
@@ -105,7 +101,7 @@ export default function Home() {
       </main>
 
       <footer className="mt-20 mb-3 text-center text-slate-300 dark:text-slate-600">
-        Made with love by squale.agency
+        Made with love by <a href="https://squale.agency">squale.agency</a>
       </footer>
 
       <div className="fixed bottom-10  flex w-full justify-center">
