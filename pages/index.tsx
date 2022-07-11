@@ -7,6 +7,7 @@ import HeaderSEO from '../components/HeaderSEO'
 import DeleteIcon from '../components/svg/DeleteIcon'
 import FileIcon from '../components/svg/FIleIcon'
 import download from '../utils/download'
+import transcode from '../utils/ffmpeg'
 import { sendGAEvent } from '../utils/gtag'
 import SEO from '../utils/seo'
 import zipFiles from '../utils/zip'
@@ -38,26 +39,13 @@ export default function Home() {
     }
   }, [])
 
-  const compressFiles = useCallback(async () => {
-    console.log('Compressing files...')
-
-    sendGAEvent({
-      action: 'compress',
-      category: 'Core',
-      label: "Compression Event",
-      value:String(totalSize()),
-    })
-    sendGAEvent({
-      action: 'theme_preference',
-      category: 'General',
-      label: "Theme Preference",
-      value: window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "default"
-    })
+  const convertFile = useCallback(async () => {
+    console.log('Convert files...')
 
     setStatus('loading')
     try {
-      const zipArchive = await zipFiles(files)
-      download(zipArchive)
+      const mp4File = await transcode(files)
+      download(mp4File, files[0].name)
       setStatus('success')
     } catch (error) {
       setStatus('error')
@@ -99,9 +87,9 @@ export default function Home() {
     <div className="">
       <HeaderSEO />
       <main className="mx-auto max-w-screen-sm px-4 pt-12 md:px-6">
-        <h1 className="text-5xl font-bold text-emerald-400">Archiver</h1>
+        <h1 className="text-5xl font-bold text-indigo-400">MOV to MP4</h1>
         <p className="mt-2 text-base text-slate-600 dark:text-slate-300">
-          Just a small website that make archives / .zip for your files.
+          Just a small website that convert .mov file to .mp4
         </p>
         <hr className="my-8 w-3/4 border-gray-200 dark:border-gray-700 md:my-12" />
 
@@ -121,7 +109,7 @@ export default function Home() {
       </footer>
 
       <div className="fixed bottom-10  flex w-full justify-center">
-        <ActionButton onClick={compressFiles} status={status} />
+        <ActionButton onClick={convertFile} status={status} />
       </div>
     </div>
   )

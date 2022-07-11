@@ -36,12 +36,12 @@ export default function Dropzone({ onDrop }: DropZoneProps) {
           <div className="flex flex-col text-sm text-gray-600 md:flex-row">
             <div
               
-              className="relative cursor-pointer rounded-md font-medium text-emerald-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
+              className="relative cursor-pointer rounded-md font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
             >
               <span>Upload your files / folders</span>
               <input
                 {...getInputProps({
-                  multiple: true,
+                  multiple: false,
                   id: 'file-upload',
                   name: 'file-upload',
                   ref: dirInputRef,

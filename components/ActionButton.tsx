@@ -26,11 +26,11 @@ export function ActionButton({ onClick, status }: ActionButtonProps) {
         )}
       >
         <span>
-          {status == 'idle' && 'Upload your files then zip it'}
-          {status == 'ready' && 'Zip these files'}
-          {status == 'loading' && 'Zipping... these files'}
-          {status == 'success' && 'Zipped these files'}
-          {status == 'error' && 'Error while zipping'}
+          {status == 'idle' && 'Upload your file then convert it'}
+          {status == 'ready' && 'Convert to mp4'}
+          {status == 'loading' && 'Converting...'}
+          {status == 'success' && 'Converted these files'}
+          {status == 'error' && 'Error while converting'}
         </span>
         {(status == 'idle' || status == 'ready') && <ZipIcon className="appear-scale-opacity h-6 w-6" />}
         {status == 'loading' && <LoaderIcon className="appear-scale-opacity h-6 w-6 " />}
